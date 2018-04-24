@@ -17,7 +17,13 @@ const typeDefs = `
     addBook (
       title: String!
       author: String!
-    ): [Book]
+    ): [Book],
+    deleteBook (id: Float!): [Book],
+    updateBook (
+      id: Float!
+      title: String
+      author: String
+    ): Book
   }
 `;
 
@@ -45,6 +51,28 @@ function insertBook(book) {
   });
 }
 
+function deleteBook(id) {
+  const key = datastore.key(['books', id]);
+  return datastore.delete(key);
+}
+
+function updateBook(args) {
+  const { id } = args;
+  const key = datastore.key(['books', id]);
+  return datastore.get(key).then(result => {
+    const entity = result[0];
+    let save = false;
+    for (let field in args) {
+      if (entity[field] !== args[field] && field !== 'id') {
+        save = true;
+        entity[field] = args[field];
+      }
+    }
+    if (save) return datastore.save({ key, data: entity }).then(() => entity);
+    return entity;
+  });
+}
+
 // The resolvers
 const resolvers = {
   Book: {
@@ -57,8 +85,7 @@ const resolvers = {
       const items = getBooks();
       return items;
     },
-    book: (obj, arg) => {
-      const { id } = arg;
+    book: (_, { id }) => {
       const item = getBook(id);
       return item;
     }
@@ -70,6 +97,16 @@ const resolvers = {
         .then(books => {
           return books;
         });
+    },
+    deleteBook: (_, { id }) => {
+      return deleteBook(id)
+        .then(() => getBooks())
+        .then(books => {
+          return books;
+        });
+    },
+    updateBook: (_, args) => {
+      return updateBook(args);
     }
   }
 };
