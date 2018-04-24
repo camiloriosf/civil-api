@@ -5,7 +5,8 @@
   "main": "index.js",
   "private": true,
   "scripts": {
-    "start": "node index.js"
+    "start": "node index.js",
+    "deploy": "gcloud app deploy"
   },
   "repository": {
     "type": "git",
@@ -18,6 +19,7 @@
   },
   "homepage": "https://github.com/camiloriosf/civil-api#readme",
   "dependencies": {
+    "@google-cloud/datastore": "^1.4.0",
     "apollo-server-express": "^1.3.5",
     "body-parser": "^1.18.2",
     "express": "^4.16.3",
