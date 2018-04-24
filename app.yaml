@@ -1,4 +1,3 @@
 runtime: nodejs
 env: flex
 service: graphql
-version: 0.0.1
