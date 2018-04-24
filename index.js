@@ -1,5 +1,4 @@
 const express = require('express');
-var crypto = require('crypto');
 const bodyParser = require('body-parser');
 const { graphqlExpress, graphiqlExpress } = require('apollo-server-express');
 const { makeExecutableSchema } = require('graphql-tools');
@@ -122,14 +121,9 @@ const app = express();
 app.enable('trust proxy');
 
 // The GraphQL endpoint
-app.use('/graphql', bodyParser.json(), graphqlExpress({ schema }));
+app.use('/', bodyParser.json(), graphqlExpress({ schema }));
 
 // GraphiQL, a visual editor for queries
-app.use('/graphiql', graphiqlExpress({ endpointURL: '/graphql' }));
+app.use('/graphiql', graphiqlExpress({ endpointURL: '/' }));
 
-const server = app.listen(PORT, () => {
-  const host = server.address().address;
-  const port = server.address().port;
-
-  console.log(`Example app listening at http://${host}:${port}`);
-});
+const server = app.listen(PORT);
