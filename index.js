@@ -11,7 +11,7 @@ const datastore = Datastore();
 
 // The GraphQL schema in string form
 const typeDefs = `
-  type Query { books: [Book] }
+  type Query { books: [Book], book(id: ID!): Book }
   type Book { id: String, title: String, author: String }
   type Mutation {
     addBook (
@@ -26,8 +26,32 @@ function getBooks() {
 
   return datastore.runQuery(query).then(results => {
     const entities = results[0];
+    console.log(entities[0][datastore.KEY]);
     return entities;
   });
+}
+
+function getBook(id) {
+  const key = datastore.key(['books', id]);
+  console.log(key);
+  return datastore
+    .get(key)
+    .then(results => {
+      console.log(results);
+      const entity = results[0];
+      return entity;
+    })
+    .catch(error => {
+      console.log(error);
+    });
+  // const query = datastore
+  //   .createQuery('books')
+  //   .filter('__key__', datastore.key(['books', id]));
+  // return datastore.runQuery(query).then(results => {
+  //   console.log(results);
+  //   const entities = results[0];
+  //   return entities;
+  // });
 }
 
 function insertBook(book) {
@@ -48,6 +72,11 @@ const resolvers = {
     books: () => {
       const items = getBooks();
       return items;
+    },
+    book: (obj, arg) => {
+      const { id } = arg;
+      const item = getBook(id);
+      return item;
     }
   },
   Mutation: {
