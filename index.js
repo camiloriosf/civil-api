@@ -121,9 +121,9 @@ const app = express();
 app.enable('trust proxy');
 
 // The GraphQL endpoint
-app.use('/', bodyParser.json(), graphqlExpress({ schema }));
+app.use('/graphql', bodyParser.json(), graphqlExpress({ schema }));
 
 // GraphiQL, a visual editor for queries
-app.use('/graphiql', graphiqlExpress({ endpointURL: '/' }));
+app.use('/graphiql', graphiqlExpress({ endpointURL: '/graphql' }));
 
 const server = app.listen(PORT);
