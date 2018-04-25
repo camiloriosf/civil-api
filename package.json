@@ -4,6 +4,9 @@
   "description": "",
   "main": "index.js",
   "private": true,
+  "engines": {
+    "node": "8.x"
+  },
   "scripts": {
     "dev": "nodemon index.js",
     "start": "node index.js",
