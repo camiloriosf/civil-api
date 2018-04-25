@@ -3,7 +3,7 @@ const bodyParser = require('body-parser');
 const { graphqlExpress, graphiqlExpress } = require('apollo-server-express');
 const { makeExecutableSchema } = require('graphql-tools');
 const Datastore = require('@google-cloud/datastore');
-const PORT = 8080;
+const PORT = process.env.PORT || 8080;
 
 // Instantiate a datastore client
 const datastore = Datastore();
