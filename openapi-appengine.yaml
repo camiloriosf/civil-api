@@ -1,0 +1,6 @@
+swagger: "2.0"
+info:
+  description: "GraphQL endpoint"
+  title: "Graphql"
+  version: "1.0.0"
+host: "civil-2018.appspot.com"
