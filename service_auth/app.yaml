@@ -1,3 +1,6 @@
 runtime: nodejs
 env: flex
 service: service_auth
+api_version: v0.0.1
+env_variables:
+  TEST: "test env variable"
